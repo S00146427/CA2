@@ -1,0 +1,120 @@
+﻿<div class="row">
+
+    <div class="col-md-4">
+        <h2>Character List</h2>
+        <input type="button" value="Get Characters" class="btn btn-primary" onclick="getCharacters()" />
+        <ul id="Character-list" class="list-group" />
+    </div>
+
+    <div class="col-md-4">
+        <h2>More Details</h2>
+        <input type="text" id="CharacterID" size="7" />
+        <input type="button" value="Get Details" class="btn btn-primary" onclick="findCharacter()" />
+    </div>
+
+            <div class="col-md-4">
+                <h2>Images</h2>
+                <div id="images"></div>
+            </div>
+        </div>
+    <script>
+
+    var uri = 'http://localhost:51397/api/characters/';
+
+    function clearList() {
+        $('#character-list').empty();
+    }
+
+    function getCharacters() {
+        clearList();
+
+        $.getJSON(uri).done(function (data) {
+            $.each(data, function (key, item) {
+                $('<li>', { text: item.ID + ' : ' + item.CharacterName }).appendTo($('#Character-list'));
+            });
+        });
+    }
+
+
+ src="https://code.jquery.com/jquery-1.10.2.js"
+<script>
+(function() {
+  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+      tags: "Game of Thrones", //What I'm searching
+      tagmode: "any",
+      format: "json"
+  })
+    .done(function( data ) {
+      $.each( data.items, function( i, item ) {
+        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+          //Get me 2
+        if (i == 2) {
+          return false;
+        }
+      });
+    });
+})();
+
+ $(document).ready(function () {
+
+     var myNavBar = {
+
+         flagAdd: true,
+
+         elements: [],
+
+         init: function (elements) {
+             this.elements = elements;
+         },
+
+         add: function () {
+             if (this.flagAdd) {
+                 for (var i = 0; i < this.elements.length; i++) {
+                     document.getElementById(this.elements[i]).className += " fixed-theme";
+                 }
+                 this.flagAdd = false;
+             }
+         },
+
+         remove: function () {
+             for (var i = 0; i < this.elements.length; i++) {
+                 document.getElementById(this.elements[i]).className =
+                         document.getElementById(this.elements[i]).className.replace(/(?:^|\s)fixed-theme(?!\S)/g, '');
+             }
+             this.flagAdd = true;
+         }
+
+     };
+
+     myNavBar.init([
+         "header",
+         "header-container",
+         "brand"
+     ]);
+
+     /*Manages the direction of the scroll*/
+
+     function offSetManager() {
+
+         var yOffset = 0;
+         var currYOffSet = window.pageYOffset;
+
+         if (yOffset < currYOffSet) {
+             myNavBar.add();
+         }
+         else if (currYOffSet == yOffset) {
+             myNavBar.remove();
+         }
+
+     }
+
+     /*bind to the document*/
+     window.onscroll = function (e) {
+         offSetManager();
+     }
+
+     offSetManager();
+ });
+
+</script>
